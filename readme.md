@@ -68,3 +68,9 @@ You can use RenderPartial as in Asp.Net MVC projects as follows:
 	</html>
 
 The path should be relative to the location of the calling template always. Nesting in N-level is okay.
+
+Installing
+==========
+
+All you need is RazorCandle.exe, dependencies are embedded.
+You can download it from here.
