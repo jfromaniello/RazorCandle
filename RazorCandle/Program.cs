@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Mime;
 using CmdLine;
 
 namespace RazorCandle
@@ -18,7 +19,14 @@ namespace RazorCandle
                 Console.WriteLine(exception.ArgumentHelp.GetHelpText(Console.BufferWidth));
                 return;
             }
-            Generator.Generate(arguments);
+            try
+            {
+                Console.WriteLine("Rendering " + arguments.Source);
+                Generator.Generate(arguments);
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
     }
 }

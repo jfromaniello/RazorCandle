@@ -17,14 +17,32 @@ namespace RazorCandle
             Razor.SetTemplateBase(typeof(HtmlTemplateBase<>));
             var template = File.ReadAllText(arguments.Source);
 
-            var model = DeserializeModel(arguments);
+            var model = DeserializeModel(arguments);;
             model.__SourcePath = Path.GetDirectoryName(arguments.Source);
-            var result = Razor.Parse(template, model);
-            File.WriteAllText(arguments.Destination, result);
-            if(arguments.Verbose)
+            try
             {
-                Console.WriteLine(result);
+                Console.WriteLine("Saving rendered template to " + arguments.Destination);
+
+                var result = Razor.Parse(template, model);
+                File.WriteAllText(arguments.Destination, result);
+                
+                if(arguments.Verbose)
+                {
+                    Console.WriteLine(result);
+                }
+            
             }
+            catch (TemplateCompilationException ex)
+            {
+                Console.WriteLine("Template compilation exception: ");
+                foreach (var compilerError in ex.Errors)
+                {
+                    Console.WriteLine("In file: " + compilerError.FileName 
+                                     + ", line: " + compilerError.Line 
+                                     + ", error: " +  compilerError.ErrorText);
+                }
+            }
+            
         }
 
         private static dynamic DeserializeModel(Arguments arguments)
