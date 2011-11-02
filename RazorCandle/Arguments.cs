@@ -3,7 +3,7 @@ using CmdLine;
 namespace RazorCandle
 {
     [CommandLineArguments(Program = "Razor Candle", 
-        Title = "Execute the razor engine against a razor file and save the result in a file", 
+        Title = "Execute the razor engine to a template and save the result in a file", 
         Description = "razorcandel ")]
     public class Arguments
     {
@@ -38,7 +38,7 @@ namespace RazorCandle
         [CommandLineParameter(
             Command = "M",
             Required = false,
-            Description = "Json model as string to pass to the model.")]
+            Description = "The model for rendering the template in JSON format.")]
         public string Model { get; set; }
 
         [CommandLineParameter(
