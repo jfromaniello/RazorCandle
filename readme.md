@@ -49,7 +49,7 @@ and it will generate this html:
 		<title>Hello</title>
 		</head>
 		<body>
-			<p>hello @Model.FirstName @Model.LastName</p>
+			<p>hello Alberto Perez</p>
 		</body>
 	</html>
 
