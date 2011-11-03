@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Mime;
 using CmdLine;
+using RazorEngine.Templating;
 
 namespace RazorCandle
 {
@@ -23,7 +24,18 @@ namespace RazorCandle
             {
                 Console.WriteLine("Rendering " + arguments.Source);
                 Generator.Generate(arguments);
-            }catch(Exception ex)
+            }
+            catch (TemplateCompilationException ex)
+            {
+                Console.WriteLine("Template compilation exception: ");
+                foreach (var compilerError in ex.Errors)
+                {
+                    Console.WriteLine("In file: " + compilerError.FileName
+                                     + ", line: " + compilerError.Line
+                                     + ", error: " + compilerError.ErrorText);
+                }
+            }
+            catch(Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }

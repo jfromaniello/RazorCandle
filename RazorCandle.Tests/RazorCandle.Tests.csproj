@@ -60,6 +60,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="views\ConventionBased.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="views\others\Hello.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="views\others\ByeBye.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="views\PageWithModel.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -87,8 +96,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-	<Target Name="BeforeBuild">
-	  <Exec Condition="Exists('$(ProjectDir)packages.config')"
-			  Command="&quot;$(SolutionDir)Tools\nuget.exe&quot; install &quot;$(ProjectDir)packages.config&quot; -o &quot;$(SolutionDir)Packages&quot;" />
-	</Target>
+  <Target Name="BeforeBuild">
+    <Exec Condition="Exists('$(ProjectDir)packages.config')" Command="&quot;$(SolutionDir)Tools\nuget.exe&quot; install &quot;$(ProjectDir)packages.config&quot; -o &quot;$(SolutionDir)Packages&quot;" />
+  </Target>
 </Project>

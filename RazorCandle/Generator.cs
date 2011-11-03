@@ -14,36 +14,30 @@ namespace RazorCandle
         public static void Generate(Arguments arguments)
         {
             Razor.SetTemplateBase(typeof(HtmlTemplateBase<>));
-            var template = File.ReadAllText(arguments.Source);
-
             var model = DeserializeModel(arguments);;
-            model.__SourcePath = Path.GetDirectoryName(arguments.Source);
-            try
+
+            var result = Render(arguments.Source, model);
+            Console.WriteLine("Saving rendered template to " + arguments.Destination);
+            File.WriteAllText(arguments.Destination, result);
+            if(arguments.Verbose)
             {
-
-                var result = Razor.Parse(template, model);
-
-                Console.WriteLine("Saving rendered template to " + arguments.Destination);
-
-                File.WriteAllText(arguments.Destination, result);
-                
-                if(arguments.Verbose)
-                {
-                    Console.WriteLine(result);
-                }
-            
+                Console.WriteLine(result);
             }
-            catch (TemplateCompilationException ex)
-            {
-                Console.WriteLine("Template compilation exception: ");
-                foreach (var compilerError in ex.Errors)
-                {
-                    Console.WriteLine("In file: " + compilerError.FileName 
-                                     + ", line: " + compilerError.Line 
-                                     + ", error: " +  compilerError.ErrorText);
-                }
-            }
-            
+        }
+
+        public static string Render(
+            string templatePath, 
+            dynamic model)
+        {
+            var fullPath = Path.GetFullPath(templatePath);
+
+            var previous = Directory.GetCurrentDirectory();
+            Directory.SetCurrentDirectory(Path.GetDirectoryName(fullPath));
+            var template = File.ReadAllText(fullPath);
+            var result = Razor.Parse(template, model);
+
+            Directory.SetCurrentDirectory(previous);
+            return result;
         }
 
         private static dynamic DeserializeModel(Arguments arguments)
@@ -68,7 +62,7 @@ namespace RazorCandle
             get
             {
                 dynamic model = this.Model;
-                return helper ?? (helper = new HtmlHelper(model.__SourcePath));
+                return helper ?? (helper = new HtmlHelper(model));
             }
         }
         public UrlHelper Url
@@ -91,19 +85,16 @@ namespace RazorCandle
 
     public class HtmlHelper
     {
-        private readonly string sourcePath;
+        private readonly dynamic model;
 
-        public HtmlHelper(string sourcePath)
+        public HtmlHelper(dynamic model)
         {
-            this.sourcePath = sourcePath;
+            this.model = model;
         }
 
         public string Partial(string sourceFile)
         {
-            var path = Path.Combine(sourcePath, sourceFile);
-            var absolutePath = Path.GetFullPath(path);
-            var directory = Path.GetDirectoryName(absolutePath);
-            return Razor.Parse(File.ReadAllText(path), new { __SourcePath = directory });
+            return Generator.Render(sourceFile, model);
         }
     }
 }

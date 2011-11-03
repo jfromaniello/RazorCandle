@@ -54,5 +54,18 @@ namespace RazorCandle.Tests
             File.ReadAllText("views\\PageWithModel.html")
                 .Should().Contain("hello Jose");
         }
+
+        [Test]
+        public void FileExploration()
+        {
+            Generator.Generate(new Arguments
+            {
+                Source = "views\\ConventionBased.cshtml",
+                Model = "{FirstName: 'Jose', LastName: 'Juan'}"
+            });
+
+            File.ReadAllText("views\\ConventionBased.html")
+                .Should().Contain("<script type=\"text/javascript\" src=\"others/Hello.js\" />");
+        }
     }
 }
