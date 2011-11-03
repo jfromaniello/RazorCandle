@@ -11,8 +11,7 @@
     <RootNamespace>RazorCandle</RootNamespace>
     <AssemblyName>RazorCandle</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile></TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -66,5 +65,11 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
     <Exec Condition="Exists('$(ProjectDir)packages.config')" Command="&quot;$(SolutionDir)Tools\nuget.exe&quot; install &quot;$(ProjectDir)packages.config&quot; -o &quot;$(SolutionDir)Packages&quot;" />
+  </Target>
+  <UsingTask TaskName="Costura.EmbedTask" AssemblyFile="$(SolutionDir)Tools\Costura.dll" />
+  
+  <Target Name="AfterBuild">
+	<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TargetDir)Merged\" />
+    <Costura.EmbedTask CreateTemporaryAssemblies="True" TargetPath="$(TargetDir)Merged\$(TargetName).exe"  />
   </Target>
 </Project>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
-using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RazorEngine;
@@ -21,9 +20,11 @@ namespace RazorCandle
             model.__SourcePath = Path.GetDirectoryName(arguments.Source);
             try
             {
-                Console.WriteLine("Saving rendered template to " + arguments.Destination);
 
                 var result = Razor.Parse(template, model);
+
+                Console.WriteLine("Saving rendered template to " + arguments.Destination);
+
                 File.WriteAllText(arguments.Destination, result);
                 
                 if(arguments.Verbose)
@@ -69,6 +70,22 @@ namespace RazorCandle
                 dynamic model = this.Model;
                 return helper ?? (helper = new HtmlHelper(model.__SourcePath));
             }
+        }
+        public UrlHelper Url
+        {
+            get
+            {
+                return new UrlHelper();
+            }
+        }
+    }
+
+    public class UrlHelper
+    {
+        public string Content(string uri)
+        {
+            //this doesn't work yet, but i need to keep backward compatibility
+            return uri;
         }
     }
 
