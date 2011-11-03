@@ -1,0 +1,14 @@
+﻿<html>
+    <head>
+    <title>Hello</title>
+    </head>
+    <body>
+
+    @foreach (var file in System.IO.Directory.GetFiles("others\\", "*.js")
+                                   .Select(f => f.Replace("\\", "/")))
+    {
+        <script type="text/javascript" src="@file" />
+    }
+
+    </body>
+</html>
