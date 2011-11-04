@@ -69,7 +69,6 @@
   </Target>
   <UsingTask TaskName="Costura.EmbedTask" AssemblyFile="$(SolutionDir)Tools\Costura.dll" />
   <Target Name="AfterBuild">
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(TargetDir)Merged\" />
-    <Costura.EmbedTask CreateTemporaryAssemblies="True" TargetPath="$(TargetDir)Merged\$(TargetName).exe" />
+    <Costura.EmbedTask CreateTemporaryAssemblies="True" />
   </Target>
 </Project>
