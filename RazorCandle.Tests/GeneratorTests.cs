@@ -67,5 +67,11 @@ namespace RazorCandle.Tests
             File.ReadAllText("views\\ConventionBased.html")
                 .Should().Contain("<script type=\"text/javascript\" src=\"others/Hello.js\" />");
         }
+
+        [Test]
+        public void CanGenerateTemplateWithEmptyNestedTemplate()
+        {
+            Assert.DoesNotThrow(() => Generator.Generate(new Arguments { Source = "views\\PageWithEmptyNested.cshtml" }));
+        }
     }
 }

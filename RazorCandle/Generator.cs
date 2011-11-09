@@ -17,7 +17,6 @@ namespace RazorCandle
             var model = DeserializeModel(arguments);;
 
             var result = Render(arguments.Source, model);
-            Console.WriteLine("Saving rendered template to " + arguments.Destination);
             File.WriteAllText(arguments.Destination, result);
             if(arguments.Verbose)
             {
@@ -34,7 +33,12 @@ namespace RazorCandle
             var previous = Directory.GetCurrentDirectory();
             Directory.SetCurrentDirectory(Path.GetDirectoryName(fullPath));
             var template = File.ReadAllText(fullPath);
-            var result = Razor.Parse(template, model);
+            
+            var result = "";
+            if(!string.IsNullOrEmpty(template))
+            {
+                result = Razor.Parse(template, model);
+            }
 
             Directory.SetCurrentDirectory(previous);
             return result;

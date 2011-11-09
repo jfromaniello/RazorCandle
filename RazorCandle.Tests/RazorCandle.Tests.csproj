@@ -69,6 +69,12 @@
     <Content Include="views\others\ByeBye.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="views\PageWithEmptyNested.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="views\EmptyNested.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="views\PageWithModel.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
