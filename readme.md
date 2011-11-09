@@ -6,14 +6,14 @@ Render razor template and save the content to a file.
 Options
 =======
 
-RazorCandle.exe source  [destination] [/M]  [/V]
-
-source         Specifies the source razor file.
-[destination]  Specify the output file. By default is the same name as the
-               source with the html extension.
-[/?]           Show Help
-[/M]           Json model as string to the model.
-[/V]           Verbose mode. Show result in the output.
+	RazorCandle.exe source  [destination] [/M]  [/V]
+	
+	source         Specifies the source razor file.
+	[destination]  Specify the output file. By default is the same name as the
+	               source with the html extension.
+	[/?]           Show Help
+	[/M]           Json model as string to the model.
+	[/V]           Verbose mode. Show result in the output.
 
 Usage
 =====
