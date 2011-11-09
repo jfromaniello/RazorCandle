@@ -22,7 +22,6 @@ namespace RazorCandle
             }
             try
             {
-                Console.WriteLine("Rendering " + arguments.Source);
                 Generator.Generate(arguments);
             }
             catch (TemplateCompilationException ex)
