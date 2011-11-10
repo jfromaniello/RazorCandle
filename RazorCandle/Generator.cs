@@ -32,6 +32,12 @@ namespace RazorCandle
 
             var previous = Directory.GetCurrentDirectory();
             Directory.SetCurrentDirectory(Path.GetDirectoryName(fullPath));
+
+            if(!File.Exists(fullPath) && File.Exists(fullPath + ".cshtml"))
+            {
+                fullPath += ".cshtml";
+            }
+
             var template = File.ReadAllText(fullPath);
             
             var result = "";

@@ -73,5 +73,17 @@ namespace RazorCandle.Tests
         {
             Assert.DoesNotThrow(() => Generator.Generate(new Arguments { Source = "views\\PageWithEmptyNested.cshtml" }));
         }
+
+        [Test]
+        public void CanGenerateWithNestedWithoutExtension()
+        {
+            Generator.Generate(new Arguments
+            {
+                Source = "views\\PageWithNestedNoExtension.cshtml"
+            });
+
+            File.ReadAllText("views\\PageWithNestedNoExtension.html")
+                .Should().Contain("1 + 1 is 2");
+        }
     }
 }

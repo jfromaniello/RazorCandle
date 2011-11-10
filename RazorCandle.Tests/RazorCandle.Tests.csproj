@@ -69,6 +69,15 @@
     <Content Include="views\others\ByeBye.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="views\PageWithNestedNoExtension.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="views\PageWithAspNetNestedTemplate.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="views\ExampleASPNetFolder\views\shared\_ATemplate.cshtml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="views\PageWithEmptyNested.cshtml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
