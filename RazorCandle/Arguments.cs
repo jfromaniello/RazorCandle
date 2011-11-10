@@ -47,5 +47,10 @@ namespace RazorCandle
             Description = "Verbose mode. Show result in the output.")]
         public bool Verbose { get; set; }
 
+        [CommandLineParameter(
+            Command = "AspNetProjectFolder",
+            Required = false,
+            Description = "Path to an Asp.Net project folder. This is useful if you need to resolve things from view\\shared")]
+        public string AspNetProjectFolder { get; set; }
     }
 }

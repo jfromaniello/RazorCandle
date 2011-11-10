@@ -85,5 +85,18 @@ namespace RazorCandle.Tests
             File.ReadAllText("views\\PageWithNestedNoExtension.html")
                 .Should().Contain("1 + 1 is 2");
         }
+
+        [Test]
+        public void CanGenerateWithAspNewViewFolderStructure()
+        {
+            Generator.Generate(new Arguments
+            {
+                Source = "views\\PageWithAspNetNestedTemplate.cshtml",
+                AspNetProjectFolder = "views\\ExampleASPNetFolder\\"
+            });
+
+            File.ReadAllText("views\\PageWithAspNetNestedTemplate.html")
+                .Should().Contain("1 + 1 is 2");
+        }
     }
 }

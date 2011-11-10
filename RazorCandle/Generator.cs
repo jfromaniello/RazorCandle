@@ -5,16 +5,22 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RazorEngine;
-using RazorEngine.Templating;
 
 namespace RazorCandle
 {
     public static class Generator
     {
+        private static string aspNetProjectTemplatesFolder;
+
         public static void Generate(Arguments arguments)
         {
             Razor.SetTemplateBase(typeof(HtmlTemplateBase<>));
-            var model = DeserializeModel(arguments);;
+            var model = DeserializeModel(arguments);
+
+            if(!string.IsNullOrEmpty(arguments.AspNetProjectFolder))
+            {
+                aspNetProjectTemplatesFolder = Path.Combine(Path.GetFullPath(arguments.AspNetProjectFolder), "views\\shared");
+            }
 
             var result = Render(arguments.Source, model);
             File.WriteAllText(arguments.Destination, result);
@@ -29,25 +35,35 @@ namespace RazorCandle
             dynamic model)
         {
             var fullPath = Path.GetFullPath(templatePath);
-
-            var previous = Directory.GetCurrentDirectory();
-            Directory.SetCurrentDirectory(Path.GetDirectoryName(fullPath));
-
-            if(!File.Exists(fullPath) && File.Exists(fullPath + ".cshtml"))
-            {
-                fullPath += ".cshtml";
-            }
-
-            var template = File.ReadAllText(fullPath);
             
-            var result = "";
-            if(!string.IsNullOrEmpty(template))
+            using(new CurrentDirectoryContext(Path.GetDirectoryName(fullPath)))
             {
-                result = Razor.Parse(template, model);
-            }
+                if (!File.Exists(fullPath))
+                {
+                    if (File.Exists(fullPath + ".cshtml"))
+                    {
+                        fullPath += ".cshtml";    
+                    }
+                    if(!string.IsNullOrEmpty(aspNetProjectTemplatesFolder))
+                    {
+                        var candidateTemplateName = Path.Combine(aspNetProjectTemplatesFolder,
+                                                                 Path.GetFileName(fullPath) + ".cshtml");
+                        if(File.Exists(candidateTemplateName))
+                        {
+                            fullPath = candidateTemplateName;
+                        }
+                    }
+                }
 
-            Directory.SetCurrentDirectory(previous);
-            return result;
+                var template = File.ReadAllText(fullPath);
+
+                var result = "";
+                if (!string.IsNullOrEmpty(template))
+                {
+                    result = Razor.Parse(template, model);
+                }
+                return result;
+            }
         }
 
         private static dynamic DeserializeModel(Arguments arguments)
@@ -60,51 +76,6 @@ namespace RazorCandle
                 deserializeModel = (IDictionary<string, JToken>) serializer.Deserialize(jsonReader);
             }
             return deserializeModel.ToExpando();
-        }
-    }
-
-    public class HtmlTemplateBase<T> : TemplateBase<T>
-    {
-        private HtmlHelper helper;
-
-        public HtmlHelper Html
-        {
-            get
-            {
-                dynamic model = this.Model;
-                return helper ?? (helper = new HtmlHelper(model));
-            }
-        }
-        public UrlHelper Url
-        {
-            get
-            {
-                return new UrlHelper();
-            }
-        }
-    }
-
-    public class UrlHelper
-    {
-        public string Content(string uri)
-        {
-            //this doesn't work yet, but i need to keep backward compatibility
-            return uri;
-        }
-    }
-
-    public class HtmlHelper
-    {
-        private readonly dynamic model;
-
-        public HtmlHelper(dynamic model)
-        {
-            this.model = model;
-        }
-
-        public string Partial(string sourceFile)
-        {
-            return Generator.Render(sourceFile, model);
         }
     }
 }
