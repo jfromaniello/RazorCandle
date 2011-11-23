@@ -98,5 +98,18 @@ namespace RazorCandle.Tests
             File.ReadAllText("views\\PageWithAspNetNestedTemplate.html")
                 .Should().Contain("1 + 1 is 2");
         }
+
+        [Test]
+        public void CanRenderTemplateWithWildcard()
+        {
+            Generator.Generate(new Arguments
+            {
+                Source = "views\\PageWithWildcard.cshtml"
+            });
+
+            File.ReadAllText("views\\PageWithWildcard.html")
+                .Should().Contain("Hello")
+                .And.Contain("ByeBye");
+        }
     }
 }

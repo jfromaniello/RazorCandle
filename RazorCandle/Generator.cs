@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RazorEngine;
@@ -34,6 +35,15 @@ namespace RazorCandle
             string templatePath, 
             dynamic model)
         {
+            //contains wildcard?
+            if(templatePath.Contains("*"))
+            {
+                var wildcardFolder = Path.GetFullPath(templatePath.Substring(0, templatePath.LastIndexOf(Path.DirectorySeparatorChar)));
+                var wildcardFilePattern = templatePath.Substring(templatePath.LastIndexOf(Path.DirectorySeparatorChar)+1);
+                var templates = Directory.GetFiles(wildcardFolder, wildcardFilePattern);
+                return string.Join(Environment.NewLine, templates.Select(p => Render(p, model)));
+            }
+
             var fullPath = Path.GetFullPath(templatePath);
             
             using(new CurrentDirectoryContext(Path.GetDirectoryName(fullPath)))
