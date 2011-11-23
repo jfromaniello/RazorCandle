@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using NUnit.Framework;
 using SharpTestsEx;
 
@@ -110,6 +111,18 @@ namespace RazorCandle.Tests
             File.ReadAllText("views\\PageWithWildcard.html")
                 .Should().Contain("Hello")
                 .And.Contain("ByeBye");
+        }
+
+        [Test]
+        public void CanRenderTemplateWithForEachFile()
+        {
+            Generator.Generate(new Arguments
+            {
+                Source = "views\\PageWithForEachFile.cshtml"
+            });
+
+            File.ReadAllText("views\\PageWithForEachFile.html")
+                .Should().Be.EqualTo("others\\ByeBye.jsothers\\Hello.js");
         }
     }
 }

@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PathUtil.cs" />
     <Compile Include="CurrentDirectoryContext.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Generator.cs" />
