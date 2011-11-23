@@ -124,5 +124,17 @@ namespace RazorCandle.Tests
             File.ReadAllText("views\\PageWithForEachFile.html")
                 .Should().Be.EqualTo("others\\ByeBye.jsothers\\Hello.js");
         }
+
+        [Test]
+        public void CanRenderTemplateWithForEachFileAndToUrl()
+        {
+            Generator.Generate(new Arguments
+            {
+                Source = "views\\PageWithForEachFileAndToUrl.cshtml"
+            });
+
+            File.ReadAllText("views\\PageWithForEachFileAndToUrl.html")
+                .Should().Be.EqualTo("others/ByeBye.jsothers/Hello.js");
+        }
     }
 }
