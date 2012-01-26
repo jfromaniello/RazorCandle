@@ -15,9 +15,21 @@ namespace RazorCandle
             ParameterIndex = 1, 
             Required = true, 
             Description = "Specifies the source razor file.")]
-        public string Source { get; set; }
+        public string Source 
+        { 
+            get
+            {
+                return source;
+            } 
+            set
+            {
+                source = RemoveLastDoubleQuote(value);
+            } 
+        }
 
         private string destination;
+        private string source;
+        private string aspNetProjectFolder;
 
         [CommandLineParameter(
             Name = "destination", 
@@ -33,8 +45,9 @@ namespace RazorCandle
                 }
                 return destination;
             }
-            set { destination = value; }
+            set { destination = RemoveLastDoubleQuote(value); }
         }
+
         [CommandLineParameter(
             Command = "M",
             Required = false,
@@ -51,6 +64,21 @@ namespace RazorCandle
             Command = "AspNetProjectFolder",
             Required = false,
             Description = "Path to an Asp.Net project folder. This is useful if you need to resolve things from view\\shared")]
-        public string AspNetProjectFolder { get; set; }
+        public string AspNetProjectFolder 
+        { 
+            get 
+            {
+                return aspNetProjectFolder;
+            } 
+            set 
+            {
+                aspNetProjectFolder = RemoveLastDoubleQuote(value);
+            } 
+        }
+
+        private string RemoveLastDoubleQuote(string value)
+        {
+            return value.EndsWith("\"") ? value.Substring(0, value.Length - 1) : value;
+        }
     }
 }

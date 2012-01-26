@@ -136,5 +136,35 @@ namespace RazorCandle.Tests
             File.ReadAllText("views\\PageWithForEachFileAndToUrl.html")
                 .Should().Be.EqualTo("others/ByeBye.jsothers/Hello.js");
         }
+
+        [Test]
+        public void CanGenerateWithBrokenPathArgument()
+        {
+            //This is because there is an extrange feature of c# that remove double quotes from command line arguments..
+
+            Generator.Generate(new Arguments
+            {
+                Source = "views\\Page1.cshtml\""
+            });
+
+            File.ReadAllText("views\\Page1.html")
+                .Should().Contain("1 + 1 is 2");
+        }
+
+        [Test]
+        public void CanGenerateWithBrokenPathAspNetFolderArgument()
+        {
+            //This is because there is an extrange feature of c# that remove double quotes from command line arguments..
+
+
+            Generator.Generate(new Arguments
+            {
+                Source = "views\\PageWithAspNetNestedTemplate.cshtml",
+                AspNetProjectFolder = "views\\ExampleASPNetFolder\\\""
+            });
+
+            File.ReadAllText("views\\PageWithAspNetNestedTemplate.html")
+                .Should().Contain("1 + 1 is 2");
+        }
     }
 }
